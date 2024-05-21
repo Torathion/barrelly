@@ -1,0 +1,18 @@
+{
+  "name": "barelly",
+  "version": "1.0.0",
+  "description": "Create barrel files faster than Donkey Kong can throw them!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["dev", "development", "barrel", "barrel-file"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "eslint-config-shiny": "^3.2.1",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  }
+}
