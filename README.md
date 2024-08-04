@@ -6,7 +6,7 @@
 
 Create barrel files faster than Donkey Kong can throw them!
 
-With `barrely`, you can automatically generate barrel files for your whole folder structure.
+With `barrelly`, you can automatically generate barrel files for your whole project in under a second!
 
 ## Installation
 
@@ -14,31 +14,84 @@ With `barrely`, you can automatically generate barrel files for your whole folde
 pnpm i -D barrelly
 ```
 
-You can even create a config file called `.barrellyrc`
-
 ## Usage
 
+Using barrelly on this project (1.0.0):
+
 ```powershell
-barrelly "./src/**/*.ts"
+barrelly ./src
 ```
 
-Barelly is made for TypeScript in mind, but you can still run it for `js` files:
+Will print:
 
 ```powershell
-barrelly -x ".js" "./src/**/*.ts"
+┌─────────┬───────────────┬──────┐
+│  action │        folder │ size │
+├─────────┼───────────────┼──────┤
+│ created │      utils/fs │ 416b │
+│ created │         utils │ 298b │
+│ created │         tasks │ 284b │
+│ created │     utils/git │ 245b │
+│ created │  utils/guards │ 233b │
+│ created │       classes │ 173b │
+│ created │  utils/string │ 119b │
+│ created │         types │  52b │
+│ created │    utils/path │  50b │
+│ created │ utils/process │  46b │
+│ created │    structures │  22b │
+└─────────┴───────────────┴──────┘
+
+Finished creating barrel files after 38ms!
+```
+
+Barrelly can map any kind of files as long as they follow the ESM `default`-`export` syntax. (.ts, .js, .jsx, .tsx, ...)
+
+#### For JS
+
+```powershell
+barrelly ./src -g .js
+```
+
+#### For TSX
+
+```powershell
+barrelly ./src -g .tsx -a .tsx
 ```
 
 ## Options
 
-### extensions
+### aliases (-a)
 
-- Searches all files with named extensions
-- Allows globs and the config file also allows arrays
-- CLI: `-x` or `--extensions`
-- **Default**: `.ts`
+-   List of aliases handles by the bundler
+-   Those extensions will be omitted inside the barrel file.
+-   **Default**: `[]`
 
-### countExports
+### countExports (-c)
 
-- Will open every file as text file and read every export or module.exports statement to count them.
-- Will write files with multiple exports as `export * from './A.ts'` in the barrel file
-- **Default**: `true`
+-   Will open every file as text file and read every export or module.exports statement to count them.
+-   Will write files with multiple exports as `export * from './<file>.ts'` inside the barrel file
+-   **Default**: `true`
+
+### exportEverything (-e)
+
+-   Flag indicating whether everything should be exported from the target folder.
+-   Necessary for libraries to ensure everything that should be exported will be exported.
+-   Useful for sub folders to reduce the lines of code (LOC) when importing the code.
+-   **Default**: `false`
+
+### glob (-g)
+
+-   Glob describing all the file extensions to search for.
+-   **Default**: `.ts`
+
+### path (target)
+
+-   The path of the target folder, which acts as the root folder for the barrel file tree.
+-   **Default**: `./src`
+
+### semi (-s)
+
+-   Style option indicating whether the barrel files should write semicolons (;) after each line or not.
+-   **Default**: `false`
+
+#### Use `barrelly -h` for CLI-specific options

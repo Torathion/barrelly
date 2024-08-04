@@ -1,18 +1,58 @@
 {
-  "name": "barelly",
-  "version": "1.0.0",
-  "description": "Create barrel files faster than Donkey Kong can throw them!",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": ["dev", "development", "barrel", "barrel-file"],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^20.12.12",
-    "eslint-config-shiny": "^3.2.1",
-    "typescript": "^5.4.5",
-    "vitest": "^1.6.0"
-  }
+    "name": "barrelly",
+    "version": "1.0.0",
+    "description": "Create barrel files faster than Donkey Kong can throw them!",
+    "main": "./dist/index.js",
+    "bin": {
+        "barrelly": "./dist/cli.js"
+    },
+    "author": "Torathion",
+    "homepage": "https://github.com/Torathion/barrelly",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Torathion/barrelly.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Torathion/barrelly/issues"
+    },
+    "scripts": {
+        "build": "node esbuild.config.js",
+        "lint": "eslint ./src",
+        "lint:fix": "eslint ./src --fix",
+        "test": "vitest",
+        "knip": "knip"
+    },
+    "keywords": [
+        "dev",
+        "development",
+        "barrel",
+        "barrel-file"
+    ],
+    "type": "module",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^22.1.0",
+        "@types/picomatch": "3.0.0",
+        "@types/strip-comments": "2.0.4",
+        "@vitest/coverage-v8": "2.0.5",
+        "esbuild": "0.23.0",
+        "eslint-config-shiny": "^3.2.1",
+        "knip": "5.27.0",
+        "strip-ansi": "7.1.0",
+        "strip-comments": "2.0.1",
+        "typescript": "^5.5.4",
+        "vitest": "^2.0.5"
+    },
+    "dependencies": {
+        "console-table-printer": "2.12.1",
+        "fdir": "6.2.0",
+        "js-toml": "1.0.0",
+        "picomatch": "4.0.2",
+        "strip-json-comments": "5.0.1",
+        "yaml": "2.5.0",
+        "yoctocolors": "2.1.1"
+    },
+    "engines": {
+        "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+    }
 }
