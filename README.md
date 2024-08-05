@@ -44,7 +44,7 @@ Will print:
 Finished creating barrel files after 38ms!
 ```
 
-Barrelly can map any kind of files as long as they follow the ESM `default`-`export` syntax. (.ts, .js, .jsx, .tsx, ...)
+Barrelly can map any kind of files as long as they follow the ESM `import`-`export` syntax. (.ts, .js, .jsx, .tsx, ...)
 
 #### For JS
 
