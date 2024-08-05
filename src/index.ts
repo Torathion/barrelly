@@ -16,11 +16,13 @@ export default async function run(options: BarrellyOptions): Promise<void> {
     const fileMetaData = await buildFiles(options, tree)
     // 3. Create files from the parsed metadata
     const createdFiles = await createFiles(fileMetaData, options)
+
     // 4. Show what was created
     if (options.silent) return
     if (createdFiles.length) {
+        // 5. count total exports, recount root element, if exportEverything is active
+        const totalExports = countTotalExports(createdFiles, options)
         displayCreatedFiles(createdFiles)
-        const totalExports = countTotalExports(createdFiles)
         log(colors.green(`Finished creating barrel files for ${totalExports} exports after ${Date.now() - start}ms!`))
     } else log(colors.yellow(`No barrel files were created after ${Date.now() - start}ms.`))
 }
