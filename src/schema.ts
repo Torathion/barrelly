@@ -6,7 +6,6 @@ export default class BarrellySchema extends CLISchema<BarrellyOptions> {
         super(
             {
                 aliases: [],
-                countExports: true,
                 exportEverything: false,
                 glob: '.ts',
                 path: './src',

@@ -41,7 +41,6 @@ describe('barrelly', () => {
         await run({
             path: './test/fixtures/simple',
             aliases: [],
-            countExports: true,
             exportEverything: true,
             glob: '.ts',
             semi: false,
@@ -54,7 +53,6 @@ describe('barrelly', () => {
         await run({
             path: './test/fixtures/nested',
             aliases: [],
-            countExports: true,
             exportEverything: true,
             glob: '.ts',
             semi: false,
@@ -68,7 +66,6 @@ describe('barrelly', () => {
         await run({
             path: './test/fixtures/poly',
             aliases: [],
-            countExports: true,
             exportEverything: true,
             glob: '.ts',
             semi: false,
@@ -81,7 +78,6 @@ describe('barrelly', () => {
         await run({
             path: './test/fixtures/js',
             aliases: [],
-            countExports: true,
             exportEverything: true,
             glob: '.js',
             semi: false,
@@ -94,7 +90,6 @@ describe('barrelly', () => {
         await run({
             path: './test/fixtures/jsx',
             aliases: ['.tsx'],
-            countExports: true,
             exportEverything: true,
             glob: '.tsx',
             semi: false,
@@ -107,7 +102,6 @@ describe('barrelly', () => {
         await run({
             path: './test/fixtures/double-line',
             aliases: [],
-            countExports: true,
             exportEverything: true,
             glob: '.ts',
             semi: false,
@@ -120,7 +114,6 @@ describe('barrelly', () => {
         await run({
             path: './test/fixtures/single-normal',
             aliases: [],
-            countExports: true,
             exportEverything: true,
             glob: '.ts',
             semi: false,

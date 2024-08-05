@@ -66,12 +66,6 @@ barrelly ./src -g .tsx -a .tsx
 -   Those extensions will be omitted inside the barrel file.
 -   **Default**: `[]`
 
-### countExports (-c)
-
--   Will open every file as text file and read every export or module.exports statement to count them.
--   Will write files with multiple exports as `export * from './<file>.ts'` inside the barrel file
--   **Default**: `true`
-
 ### exportEverything (-e)
 
 -   Flag indicating whether everything should be exported from the target folder.
