@@ -1,5 +1,9 @@
 import type { ArgumentType } from './types'
 
+export interface FileSizeable {
+    size: string
+}
+
 export interface CLISchemaObject {
     [x: string]: (boolean | string)[] | boolean | string | undefined
     silent?: boolean
@@ -30,10 +34,9 @@ export interface Disposable<T> {
     handle: T
 }
 
-export interface CreatedFileMetadata {
+export interface CreatedFileMetadata extends FileSizeable {
     action: string
     folder: string
-    size: string
 }
 
 export interface ArgMetadata {

@@ -3,6 +3,7 @@ import type { TreeNode } from 'src/structures/Tree'
 import type Tree from 'src/structures/Tree'
 import type { BarrelFileMetaData, BarrellyOptions, FileMetaData } from 'src/types/interfaces'
 import countExports from './countExports'
+import { lexicCompare } from 'src/utils'
 
 const files = new Map<string, Set<string>>()
 
@@ -56,6 +57,6 @@ export default async function buildFiles(opts: BarrellyOptions, tree: Tree<FileM
     )
     const filesArray: BarrelFileMetaData[] = []
     for (const [path, value] of files) filesArray.push({ imports: Array.from(value).sort(), path })
-    filesArray.sort((a, b) => a.path.localeCompare(b.path, 'en', { sensitivity: 'base' }))
+    filesArray.sort((a, b) => lexicCompare(a.path, b.path))
     return filesArray
 }
