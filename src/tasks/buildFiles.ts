@@ -56,6 +56,6 @@ export default async function buildFiles(opts: BarrellyOptions, tree: Tree<FileM
     )
     const filesArray: BarrelFileMetaData[] = []
     for (const [path, value] of files) filesArray.push({ imports: Array.from(value).sort(), path })
-    filesArray.sort((a, b) => a.path.length - b.path.length)
+    filesArray.sort((a, b) => a.path.localeCompare(b.path, 'en', { sensitivity: 'base' }))
     return filesArray
 }
