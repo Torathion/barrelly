@@ -13,7 +13,8 @@ async function handleCreate(opts: BarrellyOptions, file: BarrelFileMetaData, isT
     return {
         action: isNew ? colors.green('created') : colors.blue('updated'),
         folder: path.replace(join(cwd, opts.path), '').replace('index.ts', '').replaceAll('\\', '/').slice(1, -1) || colors.yellow('<root>'),
-        size: toReadableFileSize((await stat(path)).size)
+        size: toReadableFileSize((await stat(path)).size),
+        exports: file.exports
     }
 }
 

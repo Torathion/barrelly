@@ -18,6 +18,14 @@ export interface BarrellyOptions extends CLISchemaObject {
     semi: boolean
 }
 
+export interface ExportsCounter {
+    exports: number
+}
+
+export interface FileBuildMetadata extends ExportsCounter {
+    lines: Set<string>
+}
+
 export interface ExportMetadata {
     count: number
     hasDefault: boolean
@@ -30,7 +38,7 @@ export interface FileMetaData {
     path: string
 }
 
-export interface BarrelFileMetaData {
+export interface BarrelFileMetaData extends ExportsCounter {
     imports: string[]
     path: string
 }
@@ -40,7 +48,7 @@ export interface Disposable<T> {
     handle: T
 }
 
-export interface CreatedFileMetadata extends FileSizeable {
+export interface CreatedFileMetadata extends FileSizeable, ExportsCounter {
     action: string
     folder: string
 }
