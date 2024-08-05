@@ -39,5 +39,11 @@ export default async function getFiles(opts: BarrellyOptions): Promise<Tree<File
             hasFiles = true
         }
     }
+    if (!hasFiles) return undefined
+    // Remove empty folder
+    tree.remove(
+        (node: TreeNode<FileMetaData>) => node.isLeaf() && !!node.value.dir,
+        (node: TreeNode<FileMetaData>) => !!node.value.dir && !node.isLeaf()
+    )
     return hasFiles ? tree : undefined
 }
