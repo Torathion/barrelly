@@ -11,7 +11,7 @@ async function handleCreate(opts: BarrellyOptions, file: BarrelFileMetaData, isT
     const path = join(file.path, `index.${isTypeScript ? 'ts' : 'js'}`)
     const handle = await safeGetFileHandle(path, 'r+')
     const isNew = !handle
-    await (isNew ? writeFile(path, file.imports.join('\n'), 'utf8') : replaceFileContent(handle, file.imports.join('\n')))
+    await (isNew ? writeFile(path, `${file.imports.join('\n')}\n`, 'utf8') : replaceFileContent(handle, `${file.imports.join('\n')}\n`))
     return {
         action: isNew ? colors.green('created') : colors.blue('updated'),
         folder: path.replace(join(cwd, opts.path), '').replace('index.ts', '').replaceAll('\\', '/').slice(1, -1) || '<root>',
