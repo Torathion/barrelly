@@ -18,9 +18,15 @@ export interface BarrellyOptions extends CLISchemaObject {
     semi: boolean
 }
 
+export interface ExportMetadata {
+    count: number
+    hasDefault: boolean
+    hasNormal: boolean
+}
+
 export interface FileMetaData {
     dir?: boolean
-    exportCount: number
+    exportMeta: ExportMetadata
     path: string
 }
 

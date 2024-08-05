@@ -23,13 +23,20 @@ function getExportContent(value: FileMetaData, opts: BarrellyOptions): string {
     const path = value.path
     const ext = extname(path)
     const exportName = basename(path)
+    const exportMeta = value.exportMeta
     const relPath = `from './${shouldEscapeExtension(value, ext, opts.aliases) ? exportName.split('.')[0] : exportName}'`
-    if (value.dir || value.exportCount > 1) return `export * ${relPath}`
-    return `export { default as ${exportName.substring(0, exportName.indexOf('.'))} } ${relPath}${opts.semi ? ';' : ''}`
+    let exportString = ''
+    if (exportMeta.hasDefault) {
+        exportString = `export { default as ${exportName.substring(0, exportName.indexOf('.'))} } ${relPath}${opts.semi ? ';' : ''}`
+    }
+    if (value.dir || (exportMeta.count > 1 && exportMeta.hasNormal) || (exportMeta.count === 1 && !exportMeta.hasDefault)) {
+        exportString = `${exportString}${exportString.length ? '\n' : ''}export * ${relPath}`
+    }
+    return exportString
 }
 
 function hasNoExports(value: FileMetaData, shouldCount: boolean): boolean {
-    return shouldCount && !value.exportCount
+    return shouldCount && !value.exportMeta.count
 }
 
 export default async function buildFiles(opts: BarrellyOptions, tree: Tree<FileMetaData>): Promise<BarrelFileMetaData[]> {
@@ -50,8 +57,8 @@ export default async function buildFiles(opts: BarrellyOptions, tree: Tree<FileM
         },
         async (leaf: TreeNode<FileMetaData>) => {
             const value = leaf.value
-            if (shouldCount) value.exportCount = await countExports(value.path)
-            if (!value.exportCount) return
+            if (shouldCount) value.exportMeta = await countExports(value.path)
+            if (!value.exportMeta.count) return
             getMetaData(leaf).add(getExportContent(value, opts))
         }
     )

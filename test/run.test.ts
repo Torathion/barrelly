@@ -103,6 +103,32 @@ describe('barrelly', () => {
         expect(await fileContentEqual('./test/fixtures/jsx/index.ts', './test/expected-fixtures/jsx.index.ts')).toBe(true)
     })
 
+    it('separates default export and other exports, if the export count is higher than one', async () => {
+        await run({
+            path: './test/fixtures/double-line',
+            aliases: [],
+            countExports: true,
+            exportEverything: true,
+            glob: '.ts',
+            semi: false,
+            silent: true
+        })
+        expect(await fileContentEqual('./test/fixtures/double-line/index.ts', './test/expected-fixtures/double-line.index.ts')).toBe(true)
+    })
+
+    it('writes a poly export for a single normal export', async () => {
+        await run({
+            path: './test/fixtures/single-normal',
+            aliases: [],
+            countExports: true,
+            exportEverything: true,
+            glob: '.ts',
+            semi: false,
+            silent: true
+        })
+        expect(await fileContentEqual('./test/fixtures/single-normal/index.ts', './test/expected-fixtures/single-normal.index.ts')).toBe(true)
+    })
+
     describe('command', () => {
         it('can show the version', async () => {
             const { output, code } = await runCLI(['barrelly', '-v'])
