@@ -1,10 +1,7 @@
 import * as colors from 'yoctocolors'
-import buildFiles from './tasks/buildFiles'
-import createFiles from './tasks/createFiles'
-import displayCreatedFiles from './tasks/displayCreatedFiles'
-import getFiles from './tasks/getFiles'
 import type { BarrellyOptions } from './types/interfaces'
 import { log } from './utils'
+import { buildFiles, countTotalExports, createFiles, displayCreatedFiles, getFiles } from './tasks'
 
 export default async function run(options: BarrellyOptions): Promise<void> {
     const start = Date.now()
@@ -19,10 +16,13 @@ export default async function run(options: BarrellyOptions): Promise<void> {
     const fileMetaData = await buildFiles(options, tree)
     // 3. Create files from the parsed metadata
     const createdFiles = await createFiles(fileMetaData, options)
+
     // 4. Show what was created
     if (options.silent) return
     if (createdFiles.length) {
+        // 5. count total exports, recount root element, if exportEverything is active
+        const totalExports = countTotalExports(createdFiles, options)
         displayCreatedFiles(createdFiles)
-        log(colors.green(`Finished creating barrel files after ${Date.now() - start}ms!`))
+        log(colors.green(`Finished creating barrel files for ${totalExports} exports after ${Date.now() - start}ms!`))
     } else log(colors.yellow(`No barrel files were created after ${Date.now() - start}ms.`))
 }

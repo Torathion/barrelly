@@ -44,7 +44,7 @@ Will print:
 Finished creating barrel files after 38ms!
 ```
 
-Barrelly can map any kind of files as long as they follow the ESM `default`-`export` syntax. (.ts, .js, .jsx, .tsx, ...)
+Barrelly can map any kind of files as long as they follow the ESM `import`-`export` syntax. (.ts, .js, .jsx, .tsx, ...)
 
 #### For JS
 
@@ -65,12 +65,6 @@ barrelly ./src -g .tsx -a .tsx
 -   List of aliases handles by the bundler
 -   Those extensions will be omitted inside the barrel file.
 -   **Default**: `[]`
-
-### countExports (-c)
-
--   Will open every file as text file and read every export or module.exports statement to count them.
--   Will write files with multiple exports as `export * from './<file>.ts'` inside the barrel file
--   **Default**: `true`
 
 ### exportEverything (-e)
 

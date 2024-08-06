@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import Tree, { TreeNode } from 'src/structures/Tree'
 import isDir from 'src/utils/guards/isDir'
 import picomatch from 'picomatch'
-import { cwd } from 'src/constants'
+import { cwd, EmptyExportMetadata } from 'src/constants'
 
 function mapper(childNode: TreeNode<FileMetaData>, value: FileMetaData): boolean {
     return value.path.includes(childNode.value.path)
@@ -25,7 +25,7 @@ export default async function getFiles(opts: BarrellyOptions): Promise<Tree<File
     paths.sort((a, b) => a.length - b.length)
     // the root folder is always the shortest path
     const root = paths.shift()!
-    const tree = new Tree<FileMetaData>({ dir: isDir(root), exportCount: 0, path: root })
+    const tree = new Tree<FileMetaData>({ dir: isDir(root), exportMeta: EmptyExportMetadata, path: root })
     const length = paths.length
     // Check if there are paths with extensions
     let hasFiles = false
@@ -33,11 +33,17 @@ export default async function getFiles(opts: BarrellyOptions): Promise<Tree<File
     for (let i = 0; i < length; i++) {
         path = paths[i]
         dir = isDir(path)
-        if (dir) tree.add({ dir, exportCount: 0, path }, mapper, equal)
+        if (dir) tree.add({ dir, exportMeta: EmptyExportMetadata, path }, mapper, equal)
         else {
-            tree.insert({ dir, exportCount: 0, path }, mapper, equal)
+            tree.insert({ dir, exportMeta: EmptyExportMetadata, path }, mapper, equal)
             hasFiles = true
         }
     }
+    if (!hasFiles) return undefined
+    // Remove empty folder
+    tree.remove(
+        (node: TreeNode<FileMetaData>) => node.isLeaf() && !!node.value.dir,
+        (node: TreeNode<FileMetaData>) => !!node.value.dir && !node.isLeaf()
+    )
     return hasFiles ? tree : undefined
 }

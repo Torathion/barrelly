@@ -16,12 +16,6 @@ export interface BarrellyOptions extends CLISchemaObject {
      */
     aliases: string[]
     /**
-     *  Flag deciding whether the tool should count all the exports or should only assume the default export based on the file name.
-     *
-     *  @defaultValue `true`
-     */
-    countExports: boolean
-    /**
      *  Flag deciding whether the tool should export everything or just have the barrel files internally. This is necessary for libraries and subfolders.
      *
      *  @defaultValue `false`

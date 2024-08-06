@@ -1,5 +1,9 @@
 import type { ArgumentType } from './types'
 
+export interface FileSizeable {
+    size: string
+}
+
 export interface CLISchemaObject {
     [x: string]: (boolean | string)[] | boolean | string | undefined
     silent?: boolean
@@ -7,20 +11,33 @@ export interface CLISchemaObject {
 
 export interface BarrellyOptions extends CLISchemaObject {
     aliases: string[]
-    countExports: boolean
     exportEverything: boolean
     glob: string
     path: string
     semi: boolean
 }
 
+export interface ExportsCounter {
+    exports: number
+}
+
+export interface FileBuildMetadata extends ExportsCounter {
+    lines: Set<string>
+}
+
+export interface ExportMetadata {
+    count: number
+    hasDefault: boolean
+    hasNormal: boolean
+}
+
 export interface FileMetaData {
     dir?: boolean
-    exportCount: number
+    exportMeta: ExportMetadata
     path: string
 }
 
-export interface BarrelFileMetaData {
+export interface BarrelFileMetaData extends ExportsCounter {
     imports: string[]
     path: string
 }
@@ -30,10 +47,9 @@ export interface Disposable<T> {
     handle: T
 }
 
-export interface CreatedFileMetadata {
+export interface CreatedFileMetadata extends FileSizeable, ExportsCounter {
     action: string
     folder: string
-    size: string
 }
 
 export interface ArgMetadata {

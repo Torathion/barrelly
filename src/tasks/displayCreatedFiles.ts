@@ -1,10 +1,11 @@
-import { printTable } from 'console-table-printer'
+import { Table } from 'console-table-printer'
 import type { CreatedFileMetadata } from 'src/types/interfaces'
-
-function getNumberPart(text: string): number {
-    return +/\d+/.exec(text)!
-}
+import { sortByFileSize } from 'src/utils/sortByFileSize'
 
 export default function displayCreatedFiles(files: CreatedFileMetadata[]): void {
-    printTable(files.sort((a, b) => getNumberPart(b.size) - getNumberPart(a.size)))
+    const p = new Table({
+        columns: [{ name: 'action' }, { name: 'folder', alignment: 'left' }, { name: 'exports' }, { name: 'size' }],
+        rows: files.sort(sortByFileSize)
+    })
+    p.printTable()
 }

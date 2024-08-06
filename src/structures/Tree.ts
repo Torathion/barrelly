@@ -1,4 +1,4 @@
-import type { AsyncTraverser, TreeMapper } from 'src/types/types'
+import type { AsyncTraverser, Traverser, TreeMapper } from 'src/types/types'
 
 export class TreeNode<T> {
     childCount: number
@@ -69,7 +69,10 @@ export default class Tree<T> {
         for (let i = 0; i < childCount; i++) {
             child = children[i]
             if (equalizer(child, value)) return
-            if (traverser(child, value)) { this.add(value, traverser, equalizer, child); return }
+            if (traverser(child, value)) {
+                this.add(value, traverser, equalizer, child)
+                return
+            }
         }
         currentNode.add(this.counter++, value)
     }
@@ -85,19 +88,35 @@ export default class Tree<T> {
         for (let i = 0; i < childCount; i++) {
             child = children[i]
             if (equalizer(child, value)) return
-            if (traverser(child, value)) { this.insert(value, traverser, equalizer, child); return }
+            if (traverser(child, value)) {
+                this.insert(value, traverser, equalizer, child)
+                return
+            }
         }
         currentNode.insert(this.counter++, value)
     }
 
-    async traverse(nodeTraverser: AsyncTraverser<T>, leafTraverser: AsyncTraverser<T>, root = this.root): Promise<void> {
-        if (root.isLeaf()) await leafTraverser(root)
+    async traverse(traverser: AsyncTraverser<T>, root = this.root): Promise<void> {
+        if (root.isLeaf()) await traverser(root)
         else {
             const length = root.childCount
             const promises: Promise<void>[] = new Array(length)
-            for (let i = 0; i < length; i++) promises[i] = this.traverse(nodeTraverser, leafTraverser, root.children[i])
-            promises.push(nodeTraverser(root))
+            for (let i = 0; i < length; i++) promises[i] = this.traverse(traverser, root.children[i])
+            promises.push(traverser(root))
             await Promise.all(promises)
+        }
+    }
+
+    remove(remover: Traverser<T>, traverser: Traverser<T>, root = this.root): void {
+        if (root.isLeaf()) return
+        const length = root.childCount
+        const children = root.children
+        let child: TreeNode<T>
+        for (let i = 0; i < length; i++) {
+            child = children[i]
+            if (!child) return
+            if (traverser(child)) this.remove(remover, traverser, child)
+            if (remover(child)) children.splice(children.indexOf(child), 1)
         }
     }
 }
