@@ -4,8 +4,9 @@ import { parse } from 'yaml'
 import { load } from 'js-toml'
 import { cwd } from 'src/constants'
 import type { ArgToken, CLISchemaObject, ParsedArgs } from 'src/types'
-import { fileToJson, getDefaultScriptExport, kebabToCamelCase, openFile, readFile, toKebabCase } from 'src/utils'
+import { fileToJson, getDefaultScriptExport, kebabToCamelCase, readFile } from 'src/utils'
 import extension from 'src/utils/path/extension'
+import { open } from 'node:fs/promises'
 
 function normalizeKeys<T extends CLISchemaObject>(values: T): T {
     const keys = Object.keys(values)
@@ -54,7 +55,7 @@ export default class CLISchema<T extends CLISchemaObject> {
             case 'js':
                 return getDefaultScriptExport(fileName)
             case 'json':
-                return fileToJson((await openFile(fileName, 'r+')).handle)
+                return fileToJson(await open(fileName, 'r+'))
             case 'yml':
             case 'yaml':
                 return parse(await readFile(fileName))

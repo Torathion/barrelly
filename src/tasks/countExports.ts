@@ -1,9 +1,9 @@
 import { EmptyExportMetadata } from 'src/constants'
 import type { ExportMetadata } from 'src/types'
-import safeGetFileHandle from 'src/utils/fs/safeGetFileHandle'
+import openSafe from 'src/utils/fs/openSafe'
 
 export default async function countExports(path: string): Promise<ExportMetadata> {
-    const handle = await safeGetFileHandle(path, 'r+')
+    const handle = await openSafe(path, 'r+')
     if (!handle) return EmptyExportMetadata
     let count = 0
     let hasDefault = false
