@@ -22,7 +22,7 @@ export interface ExportsCounter {
 }
 
 export interface FileBuildMetadata extends ExportsCounter {
-    lines: Set<string>
+    lines: string[]
 }
 
 export interface ExportMetadata {
