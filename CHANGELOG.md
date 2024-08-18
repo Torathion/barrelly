@@ -1,6 +1,29 @@
 # CHANGELOG
 
-## [1.1.0] 2024-08-06
+[Version] European date format
+
+## [1.2.0] 19.08.2024
+
+### Added
+
+-   Warning for exporting from duplicate named resources
+-   `ignore` option to ignore paths from the output
+
+### Changed
+
+-   Lexical compare now sorts WITH case sensitivity
+
+### Fixed
+
+-   Removed all file handle warnings
+-   Properly remove empty folders from tree
+
+### Misc
+
+-   Cleanup
+-   Updated Dependencies
+
+## [1.1.0] 06.08.2024
 
 ### Added
 
