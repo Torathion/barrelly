@@ -15,6 +15,7 @@ export interface BarrellyOptions extends CLISchemaObject {
     glob: string
     path: string
     semi: boolean
+    ignore: string[]
 }
 
 export interface ExportsCounter {

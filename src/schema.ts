@@ -9,7 +9,8 @@ export default class BarrellySchema extends CLISchema<BarrellyOptions> {
                 exportEverything: false,
                 glob: '.ts',
                 path: './src',
-                semi: false
+                semi: false,
+                ignore: []
             },
             'path'
         )

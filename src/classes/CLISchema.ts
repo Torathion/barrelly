@@ -71,7 +71,7 @@ export default class CLISchema<T extends CLISchemaObject> {
         if (!tokens.length) return values
         const options = tokens.filter(token => token.kind === 'option')
         const len = options.length
-        let positiveName: string, tokenName: string, token: ArgToken
+        let tokenName: string, token: ArgToken
         // Handle negated options
         const newValues: Record<string, unknown> = Object.assign({}, values)
         for (let i = 0; i < len; i++) {
@@ -79,15 +79,12 @@ export default class CLISchema<T extends CLISchemaObject> {
             tokenName = token.name
             if (Array.isArray(newValues[tokenName])) newValues[tokenName] = (newValues[tokenName] as string[])[0].split(' ')
             else if (tokenName.startsWith('no-')) {
-                positiveName = tokenName.substring(3)
-                newValues[positiveName] = values[tokenName]
+                newValues[tokenName.substring(3)] = values[tokenName]
                 delete newValues[tokenName]
             } else newValues[kebabToCamelCase(tokenName)] = token.value ?? true
         }
         const posLen = positionals.length
-        if (posLen) {
-            newValues[this.scriptTarget] = posLen === 1 ? positionals[0] : positionals
-        }
+        if (posLen) newValues[this.scriptTarget] = posLen === 1 ? positionals[0] : positionals
         return newValues as T
     }
 }
