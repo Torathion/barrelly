@@ -54,7 +54,7 @@ export default async function buildFiles(opts: BarrellyOptions, tree: Tree<FileM
         handleMetadata(node, opts)
     })
     const filesArray: BarrelFileMetaData[] = []
-    for (const [path, value] of files) filesArray.push({ imports: value.lines.sort(), path, exports: value.exports })
+    for (const [path, value] of files) filesArray.push({ imports: value.lines.sort(lexicCompare), path, exports: value.exports })
     filesArray.sort((a, b) => lexicCompare(a.path, b.path))
     return filesArray
 }

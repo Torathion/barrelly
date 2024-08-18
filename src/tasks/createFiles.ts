@@ -10,6 +10,7 @@ async function handleCreate(opts: BarrellyOptions, file: BarrelFileMetaData, isT
     const handle = await openSafe(path, 'r+')
     const isNew = !handle
     await (isNew ? writeFile(path, `${file.imports.join('\n')}\n`, 'utf8') : replaceFileContent(handle, `${file.imports.join('\n')}\n`))
+    if (handle) await handle.close()
     return {
         action: isNew ? colors.green('created') : colors.blue('updated'),
         folder: path.replace(join(cwd, opts.path), '').replace('index.ts', '').replaceAll('\\', '/').slice(1, -1) || colors.yellow('<root>'),
