@@ -3,13 +3,14 @@ import { join } from 'node:path'
 import * as colors from 'yoctocolors'
 import { cwd } from 'src/constants'
 import type { BarrelFileMetaData, BarrellyOptions, CreatedFileMetadata } from 'src/types/interfaces'
-import { replaceFileContent, safeGetFileHandle, toReadableFileSize } from 'src/utils'
+import { replaceFileContent, openSafe, toReadableFileSize } from 'src/utils'
 
 async function handleCreate(opts: BarrellyOptions, file: BarrelFileMetaData, isTypeScript: boolean): Promise<CreatedFileMetadata> {
     const path = join(file.path, `index.${isTypeScript ? 'ts' : 'js'}`)
-    const handle = await safeGetFileHandle(path, 'r+')
+    const handle = await openSafe(path, 'r+')
     const isNew = !handle
     await (isNew ? writeFile(path, `${file.imports.join('\n')}\n`, 'utf8') : replaceFileContent(handle, `${file.imports.join('\n')}\n`))
+    if (handle) await handle.close()
     return {
         action: isNew ? colors.green('created') : colors.blue('updated'),
         folder: path.replace(join(cwd, opts.path), '').replace('index.ts', '').replaceAll('\\', '/').slice(1, -1) || colors.yellow('<root>'),

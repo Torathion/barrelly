@@ -116,7 +116,11 @@ export default class Tree<T> {
             child = children[i]
             if (!child) return
             if (traverser(child)) this.remove(remover, traverser, child)
-            if (remover(child)) children.splice(children.indexOf(child), 1)
+            if (remover(child)) {
+                children.splice(children.indexOf(child), 1)
+                this.counter--
+                root.childCount--
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
-import openFile from './openFile'
+import { open } from 'fs/promises'
 
 export default async function readFile(path: string): Promise<string> {
-    using file = await openFile(path, 'r+')
-    return (await file.handle.readFile()).toString()
+    return (await (await open(path, 'r+')).readFile()).toString()
 }

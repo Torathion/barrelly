@@ -23,7 +23,16 @@ export default defineConfig({
             functions: 60,
             statements: 60,
             provider: 'v8',
-            exclude: ['eslint.config.js', 'esbuild.config.js', '**/*.d.ts', '**/*/types.ts', '**/*/interfaces.ts', './test/**/*.ts'],
+            exclude: [
+                'eslint.config.js',
+                'esbuild.config.js',
+                '**/*.d.ts',
+                '**/*/types.ts',
+                '**/*/fixtures',
+                '**/*/expected-fixtures',
+                '**/*/interfaces.ts',
+                './test/**/*.ts'
+            ],
             reporter: ['text', 'text-summary', 'json', 'json-summary', 'html']
         },
         testTimeout: 10000,

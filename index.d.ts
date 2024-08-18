@@ -14,19 +14,25 @@ export interface BarrellyOptions extends CLISchemaObject {
      *
      *  @defaultValue `[]`
      */
-    aliases: string[]
+    aliases?: string[]
     /**
      *  Flag deciding whether the tool should export everything or just have the barrel files internally. This is necessary for libraries and subfolders.
      *
      *  @defaultValue `false`
      */
-    exportEverything: boolean
+    exportEverything?: boolean
     /**
      *  Glob describing the extension of every file to walk through.
      *
      *  @defaultValue `.ts`
      */
-    glob: string
+    glob?: string
+    /**
+     *  Folders to ignore from the barrel file tree
+     *
+     *  @defaultValue '[]'
+     */
+    ignore?: string[]
     /**
      *  The target folder as the root folder for the barrel file tree.
      *
@@ -36,7 +42,7 @@ export interface BarrellyOptions extends CLISchemaObject {
     /**
      *  Flag deciding whether the barrel file should use a semicolon (;) at the end of every line or not.
      */
-    semi: boolean
+    semi?: boolean
 }
 
 /**

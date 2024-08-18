@@ -10,5 +10,6 @@ const cmd = new Command('barrelly', 'A tool to quickly generate all the barrel f
     .option('glob', 'string', '.ts', 'Glob identifying all files to find.', 'glob')
     .option('semi', 'boolean', false, 'A style option to add a semicolon at the end of every line of each barrel file.')
     .option('aliases', 'string', [], "List of extensions to omit, because the project's package bundler already handles them.", 'extensions', true)
+    .option('ignore', 'string', [], 'List of folders to ignore. This includes all their subfolders.', 'folder', true)
     .action(run)
 await cmd.run()

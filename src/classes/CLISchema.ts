@@ -4,8 +4,9 @@ import { parse } from 'yaml'
 import { load } from 'js-toml'
 import { cwd } from 'src/constants'
 import type { ArgToken, CLISchemaObject, ParsedArgs } from 'src/types'
-import { fileToJson, getDefaultScriptExport, kebabToCamelCase, openFile, readFile, toKebabCase } from 'src/utils'
+import { fileToJson, getDefaultScriptExport, kebabToCamelCase, readFile } from 'src/utils'
 import extension from 'src/utils/path/extension'
+import { open } from 'node:fs/promises'
 
 function normalizeKeys<T extends CLISchemaObject>(values: T): T {
     const keys = Object.keys(values)
@@ -54,7 +55,7 @@ export default class CLISchema<T extends CLISchemaObject> {
             case 'js':
                 return getDefaultScriptExport(fileName)
             case 'json':
-                return fileToJson((await openFile(fileName, 'r+')).handle)
+                return fileToJson(await open(fileName, 'r+'))
             case 'yml':
             case 'yaml':
                 return parse(await readFile(fileName))
@@ -70,7 +71,7 @@ export default class CLISchema<T extends CLISchemaObject> {
         if (!tokens.length) return values
         const options = tokens.filter(token => token.kind === 'option')
         const len = options.length
-        let positiveName: string, tokenName: string, token: ArgToken
+        let tokenName: string, token: ArgToken
         // Handle negated options
         const newValues: Record<string, unknown> = Object.assign({}, values)
         for (let i = 0; i < len; i++) {
@@ -78,15 +79,12 @@ export default class CLISchema<T extends CLISchemaObject> {
             tokenName = token.name
             if (Array.isArray(newValues[tokenName])) newValues[tokenName] = (newValues[tokenName] as string[])[0].split(' ')
             else if (tokenName.startsWith('no-')) {
-                positiveName = tokenName.substring(3)
-                newValues[positiveName] = values[tokenName]
+                newValues[tokenName.substring(3)] = values[tokenName]
                 delete newValues[tokenName]
             } else newValues[kebabToCamelCase(tokenName)] = token.value ?? true
         }
         const posLen = positionals.length
-        if (posLen) {
-            newValues[this.scriptTarget] = posLen === 1 ? positionals[0] : positionals
-        }
+        if (posLen) newValues[this.scriptTarget] = posLen === 1 ? positionals[0] : positionals
         return newValues as T
     }
 }

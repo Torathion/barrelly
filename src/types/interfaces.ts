@@ -15,6 +15,7 @@ export interface BarrellyOptions extends CLISchemaObject {
     glob: string
     path: string
     semi: boolean
+    ignore: string[]
 }
 
 export interface ExportsCounter {
@@ -22,7 +23,7 @@ export interface ExportsCounter {
 }
 
 export interface FileBuildMetadata extends ExportsCounter {
-    lines: Set<string>
+    lines: string[]
 }
 
 export interface ExportMetadata {
