@@ -21,7 +21,7 @@ export default async function run(options: BarrellyOptions): Promise<void> {
     if (options.silent) return
     if (createdFiles.length) {
         // 5. count total exports, recount root element, if exportEverything is active
-        const totalExports = countTotalExports(createdFiles, options)
+        const totalExports = countTotalExports(createdFiles)
         displayCreatedFiles(createdFiles)
         log(colors.green(`Finished creating barrel files for ${totalExports} exports after ${Date.now() - start}ms!`))
     } else log(colors.yellow(`No barrel files were created after ${Date.now() - start}ms.`))

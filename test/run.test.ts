@@ -134,6 +134,23 @@ describe('barrelly', () => {
         expect(await fileContentEqual('./test/fixtures/duplicate-line/index.ts', './test/expected-fixtures/duplicate-line.index.ts')).toBe(true)
     })
 
+    it('wont crash when occurring some empty folders', async () => {
+        await run({
+            path: './test/fixtures/empty-folders-with-exports',
+            aliases: [],
+            exportEverything: true,
+            glob: '.ts',
+            semi: false,
+            silent: true
+        })
+        expect(
+            await fileContentEqual(
+                './test/fixtures/empty-folders-with-exports/index.ts',
+                './test/expected-fixtures/empty-folders-with-exports.index.ts'
+            )
+        ).toBe(true)
+    })
+
     describe('command', () => {
         it('can show the version', async () => {
             const { output, code } = await runCLI(['barrelly', '-v'])
@@ -168,6 +185,12 @@ describe('barrelly', () => {
             const { output, code } = await runCLI(['barrelly', './test/fixtures/duplicate-line', '-e'])
             expect(code).toBe(0)
             expect(output).toContain('Duplicate export line')
+        })
+
+        it('does nothing, if there were no exports founds', async () => {
+            const { output, code } = await runCLI(['barrelly', './test/fixtures/empty-folders', '-e'])
+            expect(code).toBe(0)
+            expect(output).toContain('No barrel files were created')
         })
     })
 })
